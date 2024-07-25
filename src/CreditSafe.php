@@ -137,7 +137,7 @@ final class CreditSafeAPI extends CreditSafeRateLimiting implements ApiClientInt
 
         // check for api response errors, if not among the ones for this endpoint, fail gracefully
         $this->handleForeignHttpErrors([201, 400, 401, 403, 409]);
-        
+
         return $response;
     }
 
@@ -217,9 +217,13 @@ final class CreditSafeAPI extends CreditSafeRateLimiting implements ApiClientInt
     private function write_token_to_file() {
         $tokens = [];
 
-        if (file_exists($this->tokens_file)) {
-            $tokens = json_decode(file_get_contents($this->tokens_file), true);
+        if (!file_exists($this->tokens_file)) {
+            touch($this->tokens_file);
+            return;
         }
+    
+        $tokens = json_decode(file_get_contents($this->tokens_file), true);
+        
         // check if token for this username exists & if it has not expired
         if (isset($tokens[$this->username]) && $tokens[$this->username]['expiry_time'] > time()) {
            return;
