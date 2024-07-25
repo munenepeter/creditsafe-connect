@@ -136,9 +136,8 @@ final class CreditSafeAPI extends CreditSafeRateLimiting implements ApiClientInt
         $response = $this->post('/compliance/kyc-protect/profiles', $payload);
 
         // check for api response errors, if not among the ones for this endpoint, fail gracefully
-        if ($this->http_code !== 201 && $this->http_code !== 401 && $this->http_code !== 403 && $this->http_code !== 409 ) {
-            throw new \Exception("Failed to create profile. Status Code: " . $this->http_code);
-        }
+        $this->handleForeignHttpErrors([201, 400, 401, 403, 409]);
+        
         return $response;
     }
 
@@ -203,7 +202,11 @@ final class CreditSafeAPI extends CreditSafeRateLimiting implements ApiClientInt
         if(!isset($query['countries']) || empty($query['countries']) || !is_string($query['countries'])){
             throw new \InvalidArgumentException("'countries' must be present and a non-empty string");    
         }
-        return $this->get('/companies/searchcriteria', $query);
+        $response = $this->get('/companies/searchcriteria', $query);
+
+        $this->handleForeignHttpErrors([200, 400, 401, 403]);
+
+        return $response;
     }
 
     /*
