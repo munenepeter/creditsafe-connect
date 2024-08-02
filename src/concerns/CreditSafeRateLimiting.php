@@ -54,7 +54,7 @@
         $invalid_attempts = $this->getInvalidAttempts();
         $last_attempt_time = $this->getLastAttemptTime();
 
-        return $invalid_attempts >= MAX_INVALID_ATTEMPTS && (time() - $last_attempt_time) < self::RATE_LIMIT_WINDOW_SECONDS;
+        return $invalid_attempts >= self::MAX_INVALID_ATTEMPTS && (time() - $last_attempt_time) < self::RATE_LIMIT_WINDOW_SECONDS;
     }
 
     private function recordInvalidAttempt(): void {

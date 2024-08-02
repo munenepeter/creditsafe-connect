@@ -278,7 +278,7 @@ final class CreditSafeAPI extends CreditSafeRateLimiting implements ApiClientInt
         }
     }
 
-    private function sendRequest(string $method, string $url, array $data = []): string|object  {
+    public function sendRequest(string $method, string $url, array $data = []): string|object  {
         $curl = curl_init();
 
         $headers = [
@@ -326,5 +326,6 @@ final class CreditSafeAPI extends CreditSafeRateLimiting implements ApiClientInt
 
         return json_decode($response);
     }
-}
 
+    
+}

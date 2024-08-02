@@ -53,5 +53,5 @@ interface ApiClientInterface {
      *
      * @return string|object The API response as a string or object.
      */
-    private function sendRequest(string $method, string $url, array $data = []): string|object;
+    public function sendRequest(string $method, string $url, array $data = []): string|object;
 }
